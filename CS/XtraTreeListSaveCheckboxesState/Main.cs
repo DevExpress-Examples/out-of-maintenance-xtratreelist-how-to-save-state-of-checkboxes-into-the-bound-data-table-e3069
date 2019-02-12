@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,28 +9,24 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace XtraTreeListSaveCheckboxesState
-{
-    public partial class Form1 : Form
-    {
-        public Form1()
-        {
+namespace XtraTreeListSaveCheckboxesState {
+    public partial class Main : XtraForm {
+        public Main() {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
+        private void Form1_Load(object sender, EventArgs e) {
             DataTable dt = FillDataTable();
-            
-            customTreeList1.DataSource = dt;
-            customTreeList1.CheckedStateFieldName = "CheckBoxState";
-            customTreeList1.Columns["CheckBoxState"].Visible = false;
-            
+
+            treeList1.DataSource = dt;
+            treeList1.CheckBoxFieldName = "CheckBoxState";
+            treeList1.Columns["CheckBoxState"].Visible = false;
+
             gridControl1.DataSource = dt;
+            gridView1.Columns["CheckBoxState"].ColumnEdit = repositoryItemCheckEdit1;
         }
 
-        DataTable FillDataTable()
-        {
+        DataTable FillDataTable() {
             DataTable _dataTable = new DataTable();
             DataColumn col;
             DataRow row;
@@ -68,6 +66,11 @@ namespace XtraTreeListSaveCheckboxesState
             _dataTable.Rows.Add(row);
 
             return _dataTable;
+        }
+
+        private void OnEditValueChanged(object sender, EventArgs e) {
+            gridView1.PostEditor();
+            gridView1.UpdateCurrentRow();
         }
     }
 }
